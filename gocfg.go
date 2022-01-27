@@ -63,6 +63,7 @@ func (c Config) InjestReader(r io.Reader) error {
     currentSection := ""
     lineno := 0
     for scanner.Scan() {
+        var splitted []string
         if scanner.Err() != nil {
             return scanner.Err()
         }
@@ -70,30 +71,47 @@ func (c Config) InjestReader(r io.Reader) error {
         line := scanner.Text()
         i := 0
         for ; i < len(line); i++ {
+            println(line)
             if line[i] == ' ' {
                 continue
             }
             if line[i] == ';' || line[i] == '#' {
-                break // skip line
+                goto lineend // skip line
             }
             if line[i] == '[' {
                 i++
                 j := i
+                stack := 0
                 for ; j < len(line); j++ {
+                    if line[j] == '[' {
+                        stack++
+                        continue
+                    }
                     if line[j] == ']' {
+                        if stack > 0 {
+                            stack--
+                            continue
+                        }
                         currentSection = line[i:j]
-                        goto sectionend
+                        goto lineend
                     }
                 }
                 return fmt.Errorf("%w near line %d", ErrUnfinishedSection, lineno)
-                sectionend:
             }
-            splitted := strings.Split(line, "=")
-            if len(splitted) < 2 {
-                return fmt.Errorf("%w near line %d", ErrInvalidAttributionSection, lineno)
-            }
-            c.RawSet(currentSection, splitted[0], strings.Join(splitted[1:], "="))
+            goto handle_attribution
         }
+        goto lineend
+        handle_attribution:
+        splitted = strings.Split(line, "=")
+        if len(splitted) < 2 {
+            return fmt.Errorf("%w near line %d", ErrInvalidAttributionSection, lineno)
+        }
+        c.RawSet(
+            currentSection, 
+            strings.Trim(splitted[0], " "),
+            strings.Trim(strings.Join(splitted[1:], "="), " "),
+        )
+        lineend:
     }
     return nil
 }
