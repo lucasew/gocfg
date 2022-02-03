@@ -8,22 +8,21 @@ import (
 	"strings"
 )
 
-type Section map[string]string
 
-type Config map[string]Section
+type Config map[string]SectionProvider
 
 func NewConfig() Config {
     return Config{}
 }
 
 // RawSet sets a value on a key in a section
-func (c Config) RawSet(section string, key string, value string) {
+func (c Config) RawSet(section string, key string, value string) bool {
     sec, ok := c[section]
     if !ok {
-        sec = Section{}
+        sec = NewMapSectionProvider()
         c[section] = sec
     }
-    sec[key] = value
+    return sec.RawSet(key, value)
 }
 
 // RawGet returns empty string if undefined
@@ -32,11 +31,7 @@ func (c Config) RawGet(section string, key string) string {
     if !ok {
         return ""
     }
-    val, ok := sec[key]
-    if !ok {
-        return ""
-    }
-    return val
+    return sec.RawGet(key)
 }
 
 func (c Config) RawHasSection(section string) bool {
@@ -49,8 +44,7 @@ func (c Config) RawHasKey(section string, key string) bool {
     if !ok {
         return false
     }
-    _, ok = c[section][key]
-    return ok
+    return c[section].RawHasKey(key)
 }
 
 var (
