@@ -65,7 +65,6 @@ func (c Config) InjestReader(r io.Reader) error {
         line := scanner.Text()
         i := 0
         for ; i < len(line); i++ {
-            println(line)
             if line[i] == ' ' {
                 continue
             }
