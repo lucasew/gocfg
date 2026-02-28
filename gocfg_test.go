@@ -35,5 +35,8 @@ func TestParseLine(t *testing.T) {
     if err != nil {
         t.Error(err)
     }
-    json.NewEncoder(os.Stdout).Encode(c)
+    err = json.NewEncoder(os.Stdout).Encode(c)
+    if err != nil {
+        t.Error(err)
+    }
 }
