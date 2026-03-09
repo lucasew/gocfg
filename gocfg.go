@@ -47,8 +47,8 @@ func (c Config) RawHasKey(section string, key string) bool {
 }
 
 var (
-	ErrUnfinishedSection         = errors.New("Unfinished section expression")
-	ErrInvalidAttributionSection = errors.New("Invalid attribution section")
+	ErrUnfinishedSection         = errors.New("unfinished section expression")
+	ErrInvalidAttributionSection = errors.New("invalid attribution section")
 )
 
 func (c Config) InjestReader(r io.Reader) error {
