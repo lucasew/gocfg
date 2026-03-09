@@ -44,7 +44,12 @@ func (envSectionProvider) RawGet(key string) string {
 }
 
 func (envSectionProvider) RawSet(key string, value string) bool {
-    return os.Setenv(key, value) != nil
+    err := os.Setenv(key, value)
+    if err != nil {
+        reportError(err, map[string]interface{}{"func": "envSectionProvider.RawSet", "key": key})
+        return false
+    }
+    return true
 }
 
 func (envSectionProvider) RawHasKey(key string) bool {

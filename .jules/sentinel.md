@@ -1,0 +1,1 @@
+- 2025-03-09: [Medium] Swallowed `bufio.Scanner.Err()` errors when the check is done inside the `.Scan()` loop instead of outside, or incorrect boolean returns masquerading failures.

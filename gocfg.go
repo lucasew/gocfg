@@ -58,9 +58,6 @@ func (c Config) InjestReader(r io.Reader) error {
     lineno := 0
     for scanner.Scan() {
         var splitted []string
-        if scanner.Err() != nil {
-            return scanner.Err()
-        }
         lineno++
         line := scanner.Text()
         i := 0
@@ -105,6 +102,10 @@ func (c Config) InjestReader(r io.Reader) error {
             strings.Trim(strings.Join(splitted[1:], "="), " "),
         )
         lineend:
+    }
+    if err := scanner.Err(); err != nil {
+        reportError(err, map[string]interface{}{"func": "InjestReader"})
+        return err
     }
     return nil
 }
