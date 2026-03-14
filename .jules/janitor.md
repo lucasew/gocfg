@@ -1,0 +1,1 @@
+- 2024-03-14: Handle errors from json encoder
