@@ -1,0 +1,1 @@
+- 2024-03-15: [Medium - Ignored Errors] Ensure errors from OS operations like Setenv are correctly evaluated and routed to centralized error handling rather than swallowed or inverted.
