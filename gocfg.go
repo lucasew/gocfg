@@ -98,12 +98,15 @@ func (c Config) InjestReader(r io.Reader) error {
 		if len(splitted) < 2 {
 			return fmt.Errorf("%w near line %d", ErrInvalidAttributionSection, lineno)
 		}
-		c.RawSet(
+		_ = c.RawSet(
 			currentSection,
 			strings.Trim(splitted[0], " "),
 			strings.Trim(strings.Join(splitted[1:], "="), " "),
 		)
 	lineend:
+	}
+	if err := scanner.Err(); err != nil {
+		return err
 	}
 	return nil
 }

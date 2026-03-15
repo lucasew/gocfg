@@ -1,1 +1,2 @@
 - 2024-03-14: Handle errors from json encoder
+- 2024-03-14: Explicitly handle boolean or error returns and `scanner.Err()` checks to prevent swallowed errors
