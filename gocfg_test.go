@@ -29,11 +29,13 @@ isthisright = true
 `
 
 func TestParseLine(t *testing.T) {
-    c := NewConfig()
-    r := bytes.NewBufferString(demoCFG)
-    err := c.InjestReader(r)
-    if err != nil {
-        t.Error(err)
-    }
-    json.NewEncoder(os.Stdout).Encode(c)
+	c := NewConfig()
+	r := bytes.NewBufferString(demoCFG)
+	err := c.InjestReader(r)
+	if err != nil {
+		t.Error(err)
+	}
+	if err := json.NewEncoder(os.Stdout).Encode(c); err != nil {
+		t.Error(err)
+	}
 }
