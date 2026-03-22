@@ -1,0 +1,15 @@
+[tools]
+go = "1.21.6"
+
+[tasks.lint]
+run = "go vet ./... && go fmt ./..."
+
+[tasks.test]
+run = "go test -v ./..."
+
+[tasks.build]
+run = "go build ./..."
+
+[tasks.ci]
+depends = ["lint", "test"]
+run = "echo 'CI tasks completed'"
