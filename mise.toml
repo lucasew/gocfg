@@ -1,0 +1,17 @@
+[tools]
+go = "1.22.1"
+
+[tasks."test:go"]
+run = "go test -v ./..."
+
+[tasks."lint:go"]
+run = "go fmt ./... && go vet ./..."
+
+[tasks.test]
+depends = ["test:*"]
+
+[tasks.lint]
+depends = ["lint:*"]
+
+[tasks.ci]
+depends = ["lint", "test"]
